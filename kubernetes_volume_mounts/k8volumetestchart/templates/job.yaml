@@ -17,8 +17,7 @@ spec:
                           mountPath: /mnt/azure
                     volumes:
                     - name: azure
-                    azureFile:
+                      azureFile:
                         secretName: azure-secret
                         shareName: aksshare
                         readOnly: false
-        

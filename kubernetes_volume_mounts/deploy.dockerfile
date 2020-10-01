@@ -85,11 +85,11 @@ COPY . /app
 #       START SECTION 5              #
 #       dos2Unix Everything          #
 ######################################
-RUN find /app/deploy -type f -print0 | xargs -0 -n 1 -P 4 dos2unix 
+RUN find /app -type f -print0 | xargs -0 -n 1 -P 4 dos2unix 
 
 ######################################
 #       START SECTION 6              #
 #       RUN COMMAND                  #
 ######################################
-WORKDIR /app/deploy
+WORKDIR /app
 CMD ["/bin/bash", "/app/deploy_test.sh"]
