@@ -1,0 +1,6 @@
+image:
+  name: acrdocs.azurecr.io/volmountjob
+  tag: "v1"
+job:
+  fleet: 2
+  schedule: "*/1 * * * *"

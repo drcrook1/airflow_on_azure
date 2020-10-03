@@ -1,23 +1,32 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-    name: {{ .Values.names.job }}
+  name: {{ .Release.Name }}-{{ .Chart.Name }}-cj
 spec:
-    schedule: "{{ .Values.job.schedule }}"
-    jobTemplate:
+  schedule: "{{ .Values.job.schedule }}"
+  concurrencyPolicy: Replace
+  jobTemplate:
+    spec:
+      parallelism: {{ .Values.job.fleet }}
+      template:
         spec:
-            template:
-                spec:
-                    containers:
-                    - name: {{ .Values.names.containers }}
-                      image: {{ .Values.job.image }}
-                      imagePullPolicy: Always
-                      volumeMounts:
-                        - name: azure
-                          mountPath: /mnt/azure
-                    volumes:
-                    - name: azure
-                      azureFile:
-                        secretName: azure-secret
-                        shareName: aksshare
-                        readOnly: false
+          containers:
+          - name: {{ .Release.Name }}-{{ .Chart.Name }}-cjc
+            image: {{ .Values.image.name }}:{{ .Values.image.tag }}
+            imagePullPolicy: Always
+            volumeMounts:
+              - name: azure-file-v
+                mountPath: /mnt/azure
+          restartPolicy: OnFailure
+          # containers:
+          # - name: {{ .Release.Name }}-{{ .Chart.Name }}-cjc
+          #   image: busybox
+          #   args:
+          #   - /bin/sh
+          #   - -c
+          #   - date; echo Hello from the Kubernetes cluster                
+          #restartPolicy: OnFailure
+          volumes:
+          - name: azure-file-v
+            persistentVolumeClaim:
+              claimName: azure-file-pvc
