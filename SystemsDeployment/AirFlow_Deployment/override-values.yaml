@@ -1,0 +1,11 @@
+dags:
+  gitSync:
+    enabled: true
+    repo: ssh://git@github.com/drcrook1/private_dags_sample.git
+    branch: main
+    subPath: ""
+    sshKeySecret: airflow-ssh-secret
+extraSecrets:
+  airflow-ssh-secret:
+    data: |
+      gitSshKey: 'YOURKEY'

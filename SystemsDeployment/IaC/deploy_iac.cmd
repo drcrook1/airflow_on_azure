@@ -1,0 +1,1 @@
+az deployment sub create --template-file ./bicep/main-deployment.bicep --location eastus --parameters resourcePrefix=daairflow
